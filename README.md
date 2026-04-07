@@ -1,5 +1,4 @@
-# Project-BasDat-Kel16
-# RS Sejahtera Medika Billing System
+# Project-BasDat-Kel16 | RS Sejahtera Medika Billing System
 
 ## 1. Kelompok
 Kelompok 16
@@ -20,12 +19,12 @@ Sistem ini diharapkan dapat mencatat data pasien, kunjungan, layanan medis, sert
 
 ## 3. Progress Project
 
-Beberapa tahapan yang telah dikerjakan dalam project ini antara lain:
-- Melakukan **analisis studi kasus** terhadap sistem billing rumah sakit
-- Merancang **struktur database** dan relasi antar tabel
-- Membuat **Entity Relationship Diagram (ERD)**
-- Membuat **dataset tabel menggunakan Excel**
-- Mengembangkan **aplikasi web untuk sistem billing**
+Progres yang telah dikerjakan dalam project ini antara lain:
+1. Melakukan **analisis studi kasus** terhadap sistem billing rumah sakit
+2. Merancang **struktur database** dan relasi antar tabel
+3. Membuat **Entity Relationship Diagram (ERD)**
+4. Membuat **dataset tabel menggunakan Excel**
+5. Mulai merancangkan **aplikasi web untuk sistem billing**
 
 Fitur web yang sudah tersedia:
 - Dashboard
