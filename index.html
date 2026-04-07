@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi RS Sejahtera Medika</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        rssmBlue: '#1a365d', // Biru gelap sidebar
+                        rssmActive: '#2b6cb0', // Biru terang menu aktif
+                        rssmBg: '#f8fafc',
+                        rssmGreen: '#22c55e',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .page-content { display: none; }
+        .active-page { display: block; animation: fadeIn 0.3s ease-in-out; }
+        .sidebar-item.active { background-color: #2b6cb0; color: white; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-rssmBg font-sans text-gray-800">
+
+    <div class="flex h-screen overflow-hidden">
+        <aside class="w-64 bg-rssmBlue text-white flex flex-col flex-shrink-0 shadow-2xl">
+            <div class="p-6 flex flex-col items-center gap-2 border-b border-blue-900/50">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-lg mb-2 border-4 border-rssmGreen/20">
+                    <i class="fas fa-plus text-rssmGreen text-4xl"></i>
+                </div>
+                <div class="text-center">
+                    <h2 class="font-bold text-lg leading-tight tracking-wide">RS SEJAHTERA</h2>
+                    <p class="text-[10px] text-blue-300 italic text-center">Medika Surabaya</p>
+                </div>
+            </div>
+            
+            <nav class="flex-1 mt-6 px-3 space-y-1">
+                <button onclick="showPage('dashboard', this)" class="sidebar-item active w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-blue-800/50 transition text-left">
+                    <i class="fas fa-th-large w-6 text-xl"></i>
+                    <span class="text-lg">Dashboard</span>
+                </button>
+                
+                <button onclick="showPage('pasien', this)" class="sidebar-item w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-blue-800/50 transition text-left text-blue-100/90 relative">
+                    <i class="fa-regular fa-circle-user w-6 text-xl"></i>
+                    <span class="text-lg">Pasien</span>
+                </button>
+                
+                <button onclick="showPage('kunjungan', this)" class="sidebar-item w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-blue-800/50 transition text-left text-blue-100/90">
+                    <i class="fa-regular fa-calendar-check w-6 text-xl"></i>
+                    <span class="text-lg">Kunjungan</span>
+                </button>
+                
+                <button onclick="showPage('billing', this)" class="sidebar-item w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-blue-800/50 transition text-left text-blue-100/90 relative">
+                    <i class="fa-regular fa-file-lines w-6 text-xl"></i>
+                    <span class="text-lg">Billing</span>
+                </button>
+                
+                <button onclick="showPage('laporan', this)" class="sidebar-item w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-blue-800/50 transition text-left text-blue-100/90 relative">
+                    <i class="fa-regular fa-chart-bar w-6 text-xl text-blue-100/80"></i>
+                    <span class="text-lg">Laporan</span>
+                </button>
+                
+                <div class="pt-4 border-t border-blue-900/50 mt-4 relative">
+                    <button onclick="showPage('pengaturan', this)" class="sidebar-item w-full flex items-center gap-4 px-4 py-3 rounded-xl hover:bg-blue-800/50 transition text-left text-blue-100/90 relative">
+                        <i class="fa-solid fa-gear w-6 text-xl"></i>
+                        <span class="text-lg">Pengaturan</span>
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="flex-1 flex flex-col h-full overflow-hidden">
+            <header class="bg-white px-8 py-4 flex items-center justify-between shadow-sm z-10 border-b border-gray-100">
+                <h3 id="current-page-title" class="text-xl font-bold text-gray-700">Dashboard</h3>
+                <div class="flex items-center gap-6 relative">
+                    <div class="relative w-80">
+                        <i class="fas fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i>
+                        <input type="text" placeholder="Cari pasien atau tagihan..." class="pl-12 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-300 transition-all">
+                    </div>
+                    
+                    <div class="flex items-center gap-3 border-l pl-6 border-gray-200 relative">
+                        <div class="text-right">
+                            <p class="text-sm font-bold text-gray-800">Admin</p>
+                            <p class="text-[10px] text-gray-500 uppercase font-semibold text-center">Administrator System</p>
+                        </div>
+                        <div class="w-10 h-10 rounded-full bg-rssmBlue flex items-center justify-center text-white shadow-md">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div id="content-area" class="flex-1 p-8 overflow-y-auto">
+                
+                <section id="dashboard" class="page-content active-page space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-t-4 border-t-rssmGreen">
+                            <p class="text-gray-500 text-sm font-medium italic">Pendapatan Hari Ini</p>
+                            <h4 class="text-3xl font-black mt-1">Rp 12.500.000</h4>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-t-4 border-t-blue-500">
+                            <p class="text-gray-500 text-sm font-medium italic">Pasien Baru</p>
+                            <h4 class="text-3xl font-black mt-1">45</h4>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 border-t-4 border-t-red-500 bg-red-50/20">
+                            <p class="text-gray-500 text-sm font-medium italic text-red-400">Tagihan Tertunda</p>
+                            <h4 class="text-3xl font-black mt-1 text-red-600">18</h4>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 h-80 relative">
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative"><canvas id="chart1"></canvas></div>
+                        <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 relative"><canvas id="chart2"></canvas></div>
+                    </div>
+                </section>
+
+                <section id="pasien" class="page-content">
+                    <div class="bg-white rounded-2xl shadow-sm overflow-hidden border">
+                        <div class="p-6 border-b flex justify-between items-center bg-gray-50/50">
+                            <h2 class="text-lg font-bold">Data Master Pasien</h2>
+                            <button class="bg-rssmGreen text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm hover:bg-green-600 transition">+ Tambah Pasien</button>
+                        </div>
+                        <table class="w-full text-left">
+                            <thead class="bg-gray-50 text-gray-500 text-xs uppercase italic text-center">
+                                <tr><th class="p-4">ID Pasien</th><th class="p-4">Nama Lengkap</th><th class="p-4 text-center">No. Telp</th><th class="p-4">Alamat</th></tr>
+                            </thead>
+                            <tbody class="text-sm">
+                                <tr class="border-b hover:bg-gray-50 transition"><td class="p-4 font-bold text-center">P-001</td><td class="p-4 italic font-medium">Andi Wijaya</td><td class="p-4 text-blue-600 underline text-center">08123456789</td><td class="p-4">Mulyosari, Surabaya</td></tr>
+                                <tr class="border-b hover:bg-gray-50 transition"><td class="p-4 font-bold text-center">P-002</td><td class="p-4 italic font-medium">Siti Aminah</td><td class="p-4 text-blue-600 underline text-center">08198765432</td><td class="p-4">Keputih, Surabaya</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section id="kunjungan" class="page-content">
+                    <div class="bg-white rounded-2xl shadow-sm p-6 border-l-8 border-rssmGreen border relative">
+                        <h2 class="font-bold mb-4 uppercase text-gray-600 tracking-tight">Log Kunjungan Pasien</h2>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 relative">
+                                <div class="text-left"><p class="font-bold">KJ-882 — Budi Santoso</p><p class="text-xs text-gray-500">Spesialis Penyakit Dalam | Dr. Setiawan</p></div>
+                                <span class="text-[10px] bg-green-100 text-green-700 px-3 py-1 rounded-full font-black uppercase tracking-widest text-center">Dilayani</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="billing" class="page-content">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+                        <div class="md:col-span-2 bg-white rounded-2xl shadow-sm p-8 border">
+                            <h2 class="font-bold border-b pb-4 mb-6 text-gray-600">Buat Tagihan (Invoice)</h2>
+                            <form class="space-y-6">
+                                <div class="grid grid-cols-2 gap-6 relative">
+                                    <div><label class="text-[10px] font-bold text-gray-400 uppercase text-center">ID Kunjungan</label><input type="text" class="w-full mt-1 p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none focus:ring-2 focus:ring-rssmGreen/30 text-center font-bold placeholder:text-gray-300" placeholder="KJ-XXX"></div>
+                                    <div><label class="text-[10px] font-bold text-gray-400 uppercase text-center">Metode Pembayaran</label><select class="w-full mt-1 p-3 bg-gray-50 border border-gray-200 rounded-xl outline-none font-bold text-center cursor-pointer"><option>Transfer Bank</option><option>Tunai</option><option>BPJS</option></select></div>
+                                </div>
+                                <button type="button" class="w-full bg-rssmBlue text-white py-4 rounded-xl font-black hover:bg-blue-900 shadow-lg active:scale-95 transition-all uppercase tracking-wider">Generate Billing Sekarang</button>
+                            </form>
+                        </div>
+                        <div class="bg-rssmGreen text-white rounded-2xl shadow-xl p-6 flex flex-col justify-center items-center text-center">
+                            <i class="fa-regular fa-money-bill-1 text-5xl mb-4 opacity-50 relative"></i>
+                            <p class="text-[10px] font-bold uppercase opacity-80 tracking-widest text-center">Total Tagihan Incurred</p>
+                            <h3 class="text-3xl font-black mt-2 text-center">Rp 4.200.000</h3>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="laporan" class="page-content">
+                    <div class="bg-white p-12 rounded-2xl shadow-sm text-center border-2 border-dashed border-gray-200 relative">
+                        <i class="fa-solid fa-file-invoice-dollar text-gray-300 text-6xl mb-6 relative"></i>
+                        <h2 class="text-2xl font-bold text-rssmBlue italic text-center">Laporan Keuangan & Layanan</h2>
+                        <p class="text-gray-500 mb-10 max-w-sm mx-auto text-sm text-center mt-2">Dapatkan ringkasan data transaksi dari tabel <b>bill</b> dan <b>pelayanan</b> secara otomatis.</p>
+                        <div class="flex justify-center gap-4 relative">
+                            <button class="px-8 py-3 border-2 border-rssmBlue text-rssmBlue rounded-xl hover:bg-blue-50 transition font-bold text-xs uppercase tracking-wide">Cetak PDF</button>
+                            <button class="px-8 py-3 bg-rssmBlue text-white rounded-xl hover:bg-blue-900 shadow-xl transition font-bold text-xs uppercase tracking-wider">Export Excel</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="pengaturan" class="page-content">
+                    <div class="max-w-2xl bg-white rounded-2xl shadow-sm p-8 border relative">
+                        <h2 class="font-bold border-b pb-4 mb-8 text-gray-500 text-sm tracking-widest uppercase text-center">Konfigurasi Administrator</h2>
+                        <div class="space-y-8 relative text-center">
+                            <div class="flex items-center justify-between group">
+                                <div class="text-left"><p class="font-bold text-gray-800 uppercase text-xs">Nama Institusi</p><p class="text-lg font-medium text-gray-500 italic">RS Sejahtera Medika</p></div>
+                                <i class="fas fa-edit text-gray-300 group-hover:text-rssmBlue cursor-pointer transition"></i>
+                            </div>
+                            <div class="flex items-center justify-between group">
+                                <div class="text-left"><p class="font-bold text-gray-400 uppercase text-xs">Status Sistem</p><p class="text-lg font-medium text-gray-500">Stable v1.0.4 (Kelompok 16)</p></div>
+                                <span class="bg-green-100 text-green-700 px-3 py-1 rounded text-[10px] font-bold uppercase tracking-widest text-center">Verified</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function showPage(pageId, element) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active-page'));
+            document.getElementById(pageId).classList.add('active-page');
+            document.querySelectorAll('.sidebar-item').forEach(i => {
+                i.classList.remove('active');
+                i.classList.add('text-blue-100/90');
+            });
+            element.classList.add('active');
+            element.classList.remove('text-blue-100/90');
+            
+            const titleMap = {
+                'dashboard': 'Dashboard',
+                'pasien': 'Pasien',
+                'kunjungan': 'Kunjungan',
+                'billing': 'Billing',
+                'laporan': 'Laporan',
+                'pengaturan': 'Pengaturan'
+            };
+            document.getElementById('current-page-title').innerText = titleMap[pageId];
+        }
+
+        window.onload = function() {
+            new Chart(document.getElementById('chart1'), {
+                type: 'bar',
+                data: {
+                    labels: ['Anak', 'Umum', 'Gigi', 'Bedah', 'Mata'],
+                    datasets: [{ label: 'Pasien per Poli', data: [12, 19, 3, 5, 2], backgroundColor: '#22c55e', borderRadius: 8 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+            new Chart(document.getElementById('chart2'), {
+                type: 'line',
+                data: {
+                    labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+                    datasets: [{ label: 'Arus Kas (Juta)', data: [5, 8, 12, 7, 15, 10], borderColor: '#1a365d', fill: true, backgroundColor: 'rgba(26, 54, 93, 0.05)', tension: 0.4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+        };
+    </script>
+</body>
+</html>
