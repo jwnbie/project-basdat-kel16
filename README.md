@@ -54,3 +54,6 @@ Pastikan Node.js dan npm telah terinstal di perangkat Anda.
 Frontend: [https://medika-os.vercel.app/]
 
 Backend: [https://project-basdat-kel16.onrender.com]
+
+### PPT Presentasi
+[Link PPT Presentasi](https://www.canva.com/design/DAHGEQT6-fc/Ra2BleidtP-spelNgIbutg/edit)
