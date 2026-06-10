@@ -301,12 +301,6 @@ Jalankan server:
 node server.js
 ```
 
-Server backend akan berjalan pada:
-
-```text
-http://localhost:5000
-```
-
 ---
 
 ## Menjalankan Frontend
@@ -328,13 +322,6 @@ Jalankan aplikasi:
 ```bash
 npm run dev
 ```
-
-Frontend akan berjalan pada:
-
-```text
-http://localhost:5173
-```
-
 ---
 
 # Konfigurasi Database
