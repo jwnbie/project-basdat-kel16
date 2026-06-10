@@ -14,8 +14,7 @@
 8. [Konfigurasi Database](#konfigurasi-database)
 9. [Dokumentasi API Backend](#dokumentasi-api-backend)
 10. [Struktur Basis Data](#struktur-basis-data)
-11. [Deployment](#deployment)
-12. [Dokumentasi Tambahan](#dokumentasi-tambahan)
+11. [Dokumentasi](#dokumentasi)
 
 ---
 
@@ -457,24 +456,7 @@ system_reports
 ```
 
 ---
-
-# Deployment
-
-Frontend:
-
-https://medika-os.vercel.app/
-
-Backend:
-
-https://project-basdat-kel16.onrender.com/
-
-Database:
-
-Supabase PostgreSQL
-
----
-
-# Dokumentasi Tambahan
+# Dokumentasi
 
 ## Web Publik
 
